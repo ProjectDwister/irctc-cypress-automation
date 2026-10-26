@@ -1,224 +1,174 @@
-![Please Favourite This Project Before Reading (1)](https://github.com/shivamguys/irctc-cypress-automation/assets/25263989/1fe791dc-d320-42dd-99c9-d33fd034525b)
+# IRCTC Booking Planner & Cypress Harness
 
-# IRCTC Tatkal Cypress Automation !
+This branch rebuilds the original Cypress project around a safer, more maintainable booking workflow: local-only credentials and passenger data, ranked train/class plans, structured run results, PNR capture, and guarded fallback decisions.
 
-### Now book your tatkal tickets under 1 min at ease by bypassing captcha and filling multiple passenger details at once. Let the script book it for you.
+> Use browser automation only where permitted by IRCTC's terms. The hardened flow requires manual completion of protected verification steps such as CAPTCHA and does not improve anti-bot bypass mechanisms.
 
-🙏😍👏🙏😍🙏👏🙏😍🙏👏🙏😍🙏😍🙏👏🔥👍🔥👍🔥👍🔥
-## 🎉🎉🎉🎉🎉🎉 Thanks for the appreciation guys, much appreciated. 🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
+## What is implemented
 
-![image](https://github.com/user-attachments/assets/8a1c8320-7389-4d91-bc8d-6886e6487017)
-![Tatkal_Appreciation](https://github.com/user-attachments/assets/8d167d29-8b24-461e-9ff3-a8b7df5a2883)
+- Journey planner with ranked train/class fallbacks.
+- Responsive browser UI in `planner/`.
+- Local passenger profiles separated from Git.
+- Local IRCTC credentials separated from Git.
+- Booking configuration validation.
+- Attempt materialization into the existing Cypress fixture.
+- Structured run telemetry under `artifacts/`.
+- Final-page outcome classification.
+- PNR extraction when a 10-digit PNR is returned with PNR context.
+- Safe fallback decision engine.
+- Hard stop after payment starts or whenever the transaction outcome is uncertain.
+- Preflight-only GitHub Actions workflow.
 
+## Architecture
 
-> [!NOTE] 
-> ```
-> This Cypress script for automating IRCTC ticket booking
-> is created strictly for educational purposes. The code and its
-> usage are intended to showcase Cypress testing capabilities and
-> best practices. Any attempt to use this script for unauthorized
-> access or activities that violate IRCTC terms of service or legal
-> regulations is strictly prohibited. The author(s) and associated
-> entities are not responsible for any misuse or legal consequences 
-> resulting from the use of this script for any unauthorized 
-> activities.
-> ```
-
-[![IRCTC Automation](https://github.com/shivamguys/irctc-cypress-automation/actions/workflows/irctc.yml/badge.svg)](https://github.com/shivamguys/irctc-cypress-automation/actions/workflows/irctc.yml)
-
-<!-- [![IRCTC Automation](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/simple/7afdkj/main&style=for-the-badge&logo=cypress)](https://cloud.cypress.io/projects/7afdkj/runs)
-
-[![IRCTC Automation](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/7afdkj/main&style=for-the-badge&logo=cypress)](https://cloud.cypress.io/projects/7afdkj/runs) -->
-
-
-### Watch the simple recording here....
-####  [Watch the video here](https://i.imgur.com/3U8yKmb.mp4)
-
-[![](https://imgur.com/0xFTYhk.png)](https://i.imgur.com/3U8yKmb.mp4)
-
-
-
-
-## Features it has right now?
-
--  ✓ Can book **Tatkal**, **Premium Tatkal** and **Normal Tickets** as well.
--  ✓ Can book tickets for you if you open even **2-3 minutes** before tatkal time.
--  ✓ Signing in with your **username** and **password**.
--  ✓ **Auto Upgradation Enabled**.
--  ✓ Filling Captchas and retrying untill success.
--  ✓ Support for **Food Choices**, **Seats Preferences**.
--  ✓ Will Book only if confirm berths are alloted.
--  ✓ **Multiple passengers** supported. 
--  ✓ Pre filling all your information.
--  ✓ **Payment Gateway Automation** (Paying With **UPI ID** OR **QR Code**).
-
-
-
-## How to Make this work for you?
-
-- Things you need in your system **NodeJS**, **Python**.
-- Make relevant changes in file located at **cypress/fixtures/passenger_data.json**
-> [!TIP]
-> Filling Your **UPI ID** Will Initiate A Payment Request Directly.
-> But it's a bit slow generally would take 2 or 3 sec to arrive request on your smartphone.
-> If Your are not using this then you can scan and pay directly which would be much faster.
-
-
-
-> [!NOTE] 
-> ```
-> At a time either Tatkal Or Premium Tatkal can be -> true <- not both.
-> ```
-```
-{
-  "TRAIN_NO": "12318",
-  "TRAIN_COACH": "3A",
-  "TRAVEL_DATE": "12/09/2023",
-  "SOURCE_STATION": "UMB",
-  "BOARDING_STATION": null, <-- Change to full station name if required, else leave null
-  "DESTINATION_STATION": "BSB",
-  "TATKAL": true,
-  "PREMIUM_TATKAL": false,
-  "UPI_ID_CONFIG": "",
-  "PASSENGER_DETAILS": [
-    {
-      "NAME": "SHIVAM PANDEY",
-      "AGE": 25,
-      "GENDER": "Male",
-      "SEAT": "Side Upper",
-      "FOOD" "No Food"
-    }
-  ],
-
-}
+```text
+Planner UI
+   |
+   v
+booking-plan.json + passenger-profiles.json
+   |
+   v
+prepare-attempt
+   |
+   v
+cypress/fixtures/passenger_data.json
+   |
+   v
+Cypress booking harness
+   |
+   +--> protected verification completed manually
+   |
+   v
+artifacts/run-result.json
+   |
+   v
+safe fallback engine
+   |
+   +--> next ranked attempt, only for pre-payment availability failure
+   |
+   +--> stop and review for payment/booking uncertainty
 ```
 
-- Below are the relevant values you can use for **TRAIN_COACH**, **GENDER** , **SEAT**
+## Local setup
 
-***
-```
-"__valid_coaches__": "SL | 2A | 3A | 3E | 1A | CC | EC | 2S", <---------- Please Use Only from these values.
-"__valid_seats__": "Lower | Middle | Upper | Side Lower | Side Upper | Window Side | No Preference",   <---------- Please Use Only from these values.
-"__valid_genders__": "Male | Female | Transgender", <---------- Please Use Only from these values.
-"__valid_food_choices__": "Veg | Non Veg | No Food" <---------- Please Use Only from these values.
+Install dependencies:
 
-```
-***
-
-
-- You can add multiple passenger array of objects in `PASSENGER_DETAILS` as an example below
-```
-{
-  "TRAIN_NO": "12318",
-  "TRAIN_COACH": "3A",
-  "TRAVEL_DATE": "12/09/2023",
-  "SOURCE_STATION": "UMB",
-  "BOARDING_STATION": null, <-- Change to full station name if required, else leave null
-  "DESTINATION_STATION": "BSB",
-  "TATKAL": true,
-   "PREMIUM_TATKAL": false,
-  "UPI_ID_CONFIG": "",
-  "PASSENGER_DETAILS": [
-    {
-      "NAME": "SHIVAM PANDEY",
-      "AGE": 26,
-      "GENDER": "Male",
-      "SEAT": "Side Upper",
-      "FOOD" "No Food"
-    },
-    {
-      "NAME": "Rachna Bhagat",
-      "AGE": 26,
-      "GENDER": "Female",
-      "SEAT": "Side Lower",
-      "FOOD" "No Food"
-    },
-    {
-      "NAME": "Passenger 3 Name",
-      "AGE": 26,
-      "GENDER": "Female",
-      "SEAT": "Side Lower",
-      "FOOD" "No Food"
-    }
-  ],
-
-}
+```bash
+npm ci
 ```
 
+Create local-only files from the sanitized templates:
 
-
-- You can configure your IRCTC `USERNAME` , `password` in `cypress.env.json`
-
-> [!TIP]
-> If you wish to enter **CAPTCHA** manually, then change `MANUAL_CAPTCHA` to `true` in `cypress.env.json`
-
-```
-{
-    "USERNAME": "yourusername",
-    "PASSWORD": "yourpassword",
-    "MANUAL_CAPTCHA": false
-}
-```
-# Running This On Github System (No Installation Required Easy 5 Minute Steps)... ?
-Follow The Guide -> https://github.com/shivamguys/irctc-cypress-automation/discussions/38
-
-
-# Running This On Your System... ?
-## Running this whole bunch.. ?
-
-
-## Installation Guide
-- Clone the code ```git clone https://github.com/shivamguys/irctc-cypress-automation.git``` or download the code zip files.
-- Make sure you have **Nodejs** and **npm** installed in your system you can visit **NodeJs** official website you will have full instruction guide present over there to install in your system.
-
-### Sample Nodejs and npm installation in Linux
-
-```
-# installs NVM (Node Version Manager)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-# download and install Node.js
-nvm install 21
-# verifies the right Node.js version is in the environment
-node -v # should print `v21.7.1`
-# verifies the right NPM version is in the environment
-npm -v # should print `10.5.0`
-
+```bash
+cp cypress.env.example.json cypress.env.json
+cp passenger-profiles.example.json passenger-profiles.json
+cp booking-plan.example.json booking-plan.json
 ```
 
-### After NodeJs and Npm Installation, its time for you to install python and pip on your system.
-### After Python Installation Follow Below Steps.......
-##### In Case You Want To Install Pip here's the command to install in Linux
-```sudo apt-get install python3-pip -y```
+Keep `MANUAL_CAPTCHA` set to `true` in `cypress.env.json`.
 
+The following files are ignored by Git:
 
-#### After Pip Installation you can install all requirements by pasting below command.
-```
-pip install -r irctc-captcha-solver/requirements.txt # <---- Make Sure You Run This Command From Code Folder. 
-```
+- `cypress.env.json`
+- `passenger-profiles.json`
+- `booking-plan.json`
+- `cypress/fixtures/passenger_data.json`
+- `artifacts/`
 
-#### Check If Everything Works Fine.... 
-This Would Print **No base-64 String provided** Which Means You Have Followed Correctly at this point.
-```
-python irctc-captcha-solver/app-server.py --host 0.0.0.0 --port 5001
-```
-Then run the curl to see if the captcha server is responding fine.
-```
-$ curl -X POST "http://localhost:5001/extract-text"      
--H "Content-Type: application/json"      
--d '{
-     "image": ""
-    }'
-```
-You should get below output.
-```
-{"error":"No base64 image string provided"}
+## Planner UI
+
+Open:
+
+```text
+planner/index.html
 ```
 
+The planner can:
 
-### Last Step That's It...........
+- set source, destination, date and quota;
+- set fare and confirmation rules;
+- rank multiple train/class fallbacks;
+- save the plan locally in the browser;
+- import/export `booking-plan.json`;
+- import `artifacts/run-result.json` and show the next safe action.
 
+Passenger names and IRCTC credentials are intentionally not stored in the planner.
+
+## Prepare an attempt
+
+To materialize priority 1 from the plan:
+
+```bash
+npm run prepare-attempt -- booking-plan.json passenger-profiles.json 1
 ```
-npm install # <---- Make Sure You Run This Command From Code Folder. 
-npm run start-booking <---------- This will first bring up captha server then starts booking 
+
+Validate the generated local fixture:
+
+```bash
+npm run validate-config
 ```
 
+Run the supported local flow:
+
+```bash
+npm run start-booking
+```
+
+## Run results
+
+After the test ends, the observer briefly waits for a settling payment redirect so it can capture a returned PNR when available.
+
+Every local run writes:
+
+```text
+artifacts/run-result.json
+artifacts/runs/<run-id>.result.json
+artifacts/runs/<run-id>.events.jsonl
+```
+
+Result statuses include:
+
+- `booked`
+- `booked_unverified_pnr`
+- `no_availability`
+- `payment_pending_or_uncertain`
+- `payment_failed`
+- `payment_success_unverified`
+- `transaction_error`
+- `unknown`
+
+See `docs/run-results.md` for the complete fallback policy.
+
+## Decide the next attempt
+
+After a run:
+
+```bash
+npm run next-attempt -- booking-plan.json artifacts/run-result.json
+```
+
+The engine allows progression only for clearly pre-payment availability outcomes such as `no_availability`.
+
+If payment has started, success is uncertain, or a booking may already exist, the engine returns `stop_and_review`. This is deliberate protection against duplicate bookings.
+
+## Preflight
+
+Run:
+
+```bash
+npm run preflight
+```
+
+This validates the sanitized example configuration and runs the booking-engine self-test.
+
+GitHub Actions performs this preflight only. It does not accept IRCTC credentials or initiate live bookings.
+
+## Security
+
+Older history of this repository contained live-looking credentials and passenger data. Removing them from the latest tree does not remove them from Git history.
+
+Rotate any credentials that were previously committed before using the repository again.
+
+## Legacy code
+
+The repository still contains portions of the upstream OCR/CAPTCHA implementation for historical compatibility. The hardened workflow does not use or enhance that path; `MANUAL_CAPTCHA=true` is required by the global Cypress support hook.

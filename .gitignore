@@ -1,7 +1,12 @@
 node_modules/
-.idea
+.idea/
 cypress/videos/
 cypress/screenshots/
-irctc-captcha-solver/__pycache__
-cypress/downloads/"cypress.env.json" 
+cypress/downloads/
+irctc-captcha-solver/__pycache__/
+artifacts/
+.env
 cypress.env.json
+cypress/fixtures/passenger_data.json
+booking-plan.json
+passenger-profiles.json

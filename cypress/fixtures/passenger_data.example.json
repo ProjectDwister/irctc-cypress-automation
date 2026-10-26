@@ -1,25 +1,20 @@
 {
-  "TRAIN_NO": "13185",
-  "TRAIN_COACH": "3A",
-  "TRAVEL_DATE": "24/08/2024",
-  "SOURCE_STATION": "SDAH",
+  "TRAIN_NO": "12951",
+  "TRAIN_COACH": "2A",
+  "TRAVEL_DATE": "15/11/2026",
+  "SOURCE_STATION": "MMCT",
   "BOARDING_STATION": null,
-  "DESTINATION_STATION": "DBG",
-  "TATKAL": true,
+  "DESTINATION_STATION": "NDLS",
+  "TATKAL": false,
   "PREMIUM_TATKAL": false,
   "UPI_ID_CONFIG": "",
+  "BOOK_ONLY_IF_CONFIRMED": true,
+  "AUTO_UPGRADE": true,
   "PASSENGER_DETAILS": [
     {
-      "NAME": "Shivam Pandey",
-      "AGE": 26,
+      "NAME": "Example Passenger",
+      "AGE": 35,
       "GENDER": "Male",
-      "SEAT": "No Preference",
-      "FOOD": "No Food"
-    },
-    {
-      "NAME": "Shivam Dubey",
-      "AGE": 26,
-      "GENDER": "Female",
       "SEAT": "No Preference",
       "FOOD": "No Food"
     }

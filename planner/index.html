@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IRCTC Booking Planner</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">BOOKING PLANNER</p>
+        <h1>Plan the trip. Rank the fallbacks.</h1>
+        <p class="sub">Create a local booking plan without storing IRCTC credentials or passenger details in the repository.</p>
+      </div>
+      <div class="hero-actions">
+        <button id="resultBtn" class="ghost">Review result</button>
+        <button id="importBtn" class="ghost">Import plan</button>
+        <button id="exportBtn" class="primary">Export plan</button>
+        <input id="fileInput" type="file" accept="application/json,.json" hidden />
+        <input id="resultInput" type="file" accept="application/json,.json" hidden />
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <div class="card-title">
+          <div>
+            <span class="step">01</span>
+            <h2>Journey</h2>
+          </div>
+          <span id="saveStatus" class="status">Saved locally</span>
+        </div>
+
+        <div class="form-grid">
+          <label>From
+            <input id="source" maxlength="8" placeholder="MMCT" />
+          </label>
+          <label>To
+            <input id="destination" maxlength="8" placeholder="NDLS" />
+          </label>
+          <label>Date
+            <input id="date" type="date" />
+          </label>
+          <label>Quota
+            <select id="quota">
+              <option>GENERAL</option>
+              <option>TATKAL</option>
+              <option>PREMIUM_TATKAL</option>
+            </select>
+          </label>
+          <label>Passenger profile key
+            <input id="profile" placeholder="family" />
+          </label>
+          <label>Max total fare
+            <input id="maxFare" type="number" min="0" step="1" placeholder="12000" />
+          </label>
+        </div>
+
+        <div class="checks">
+          <label class="check">
+            <input id="confirmedOnly" type="checkbox" checked />
+            <span>Confirmed berths only</span>
+          </label>
+          <label class="check">
+            <input id="autoUpgrade" type="checkbox" />
+            <span>Consider auto-upgrade</span>
+          </label>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-title">
+          <div>
+            <span class="step">02</span>
+            <h2>Ranked attempts</h2>
+          </div>
+          <button id="addAttempt" class="ghost compact">+ Add</button>
+        </div>
+
+        <div class="attempt-head">
+          <span>Priority</span><span>Train</span><span>Class</span><span></span>
+        </div>
+        <div id="attempts" class="attempts"></div>
+      </article>
+
+      <article class="card full">
+        <div class="card-title">
+          <div>
+            <span class="step">03</span>
+            <h2>Safe fallback preview</h2>
+          </div>
+        </div>
+        <div id="preview" class="preview"></div>
+        <p class="hint">Fallback is permitted only for pre-payment availability failures. Payment-pending, failed-looking, or unknown outcomes require review before another booking attempt.</p>
+      </article>
+
+      <article class="card full">
+        <div class="card-title">
+          <div>
+            <span class="step">04</span>
+            <h2>Run result</h2>
+          </div>
+          <span class="status">Import artifacts/run-result.json</span>
+        </div>
+        <div id="resultPanel" class="result-panel empty">
+          No run result loaded.
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <span>IRCTC Booking Planner</span>
+      <span>Plans remain in this browser until exported.</span>
+    </footer>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
