@@ -7,7 +7,10 @@
     "wait-for-captha-server-to-come-up": "wait-on http://localhost:5000",
     "start-irctc-booking": "cypress run --headed --no-exit",
     "start-booking": "concurrently \"npm run start-captha-server\" \"npm run wait-for-captha-server-to-come-up && npm run start-irctc-booking\"",
-    "test": "cypress run"
+    "test": "cypress run",
+    "validate-config": "node scripts/validate-config.js",
+    "validate-example": "node scripts/validate-config.js cypress/fixtures/passenger_data.example.json",
+    "preflight": "npm run validate-example"
   },
   "author": "Shivam Pandey",
   "license": "ISC",
