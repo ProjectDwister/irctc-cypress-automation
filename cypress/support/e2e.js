@@ -36,6 +36,23 @@ beforeEach(function () {
   });
 });
 
+function observeFinalOutcome(remainingChecks = 12) {
+  return cy.get("body", { log: false, timeout: 10000 }).then(($body) => {
+    const outcome = classifyBookingOutcome($body.text(), "");
+
+    if (
+      outcome.status === "payment_pending_or_uncertain" &&
+      remainingChecks > 0
+    ) {
+      return cy.wait(5000, { log: false }).then(() =>
+        observeFinalOutcome(remainingChecks - 1)
+      );
+    }
+
+    return outcome;
+  });
+}
+
 afterEach(function () {
   const runId = Cypress.env("RUN_ID");
   const attemptPriority = Number(Cypress.env("ATTEMPT_PRIORITY") || 1);
@@ -43,10 +60,7 @@ afterEach(function () {
     ? this.currentTest.state
     : "unknown";
 
-  cy.get("body", { log: false, timeout: 10000 }).then(($body) => {
-    const bodyText = $body.text();
-    const outcome = classifyBookingOutcome(bodyText, "");
-
+  observeFinalOutcome().then((outcome) => {
     const result = {
       run_id: runId,
       attempt_priority: attemptPriority,
