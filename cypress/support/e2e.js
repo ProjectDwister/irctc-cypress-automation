@@ -11,6 +11,13 @@ function makeRunId() {
 }
 
 beforeEach(function () {
+  const manualCaptcha = String(Cypress.env("MANUAL_CAPTCHA")).toLowerCase();
+  if (manualCaptcha !== "true") {
+    throw new Error(
+      "The hardened flow requires MANUAL_CAPTCHA=true for protected IRCTC verification steps."
+    );
+  }
+
   const runId = Cypress.env("RUN_ID") || makeRunId();
   Cypress.env("RUN_ID", runId);
 
