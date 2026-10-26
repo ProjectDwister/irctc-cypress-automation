@@ -222,3 +222,14 @@ npm install # <---- Make Sure You Run This Command From Code Folder.
 npm run start-booking <---------- This will first bring up captha server then starts booking 
 ```
 
+
+
+## Security hardening in this fork
+
+- IRCTC credentials are no longer committed to the repository.
+- Passenger journey data is now local-only; use the sanitized example file as a template.
+- GitHub Actions performs preflight validation only and does not accept booking credentials.
+- Run `npm run validate-config` before any local test.
+- Use `booking-plan.example.json` to define ranked train/class fallbacks and `npm run plan-preview` to inspect the order.
+
+If credentials were committed previously, rotate them. Removing a file from the latest branch does not remove secrets from existing Git history.
