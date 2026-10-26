@@ -22,6 +22,11 @@ assert.deepStrictEqual(
   false
 );
 
+assert.deepStrictEqual(
+  classifyBookingOutcome("Payment successful", "https://secure.example/payment").status,
+  "payment_success_unverified"
+);
+
 const plan = {
   attempts: [
     { priority: 1, train_no: "12951", class: "2A" },
