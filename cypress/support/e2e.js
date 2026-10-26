@@ -1,20 +1,57 @@
-// ***********************************************************
-// This example support/e2e.js is processed and
-// loaded automatically before your test files.
-//
-// This is a great place to put global configuration and
-// behavior that modifies Cypress.
-//
-// You can change the location of this file or turn off
-// automatically serving support files with the
-// 'supportFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/configuration
-// ***********************************************************
+// Global Cypress support hooks.
+import "./commands";
 
-// Import commands.js using ES2015 syntax:
-import './commands'
+const {
+  classifyBookingOutcome
+} = require("../../lib/booking/result-parser");
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+function makeRunId() {
+  const now = new Date().toISOString().replace(/[:.]/g, "-");
+  return "irctc-" + now;
+}
+
+beforeEach(function () {
+  const runId = Cypress.env("RUN_ID") || makeRunId();
+  Cypress.env("RUN_ID", runId);
+
+  cy.task("appendRunEvent", {
+    run_id: runId,
+    event: "run_started",
+    attempt_priority: Number(Cypress.env("ATTEMPT_PRIORITY") || 1),
+    spec: Cypress.spec.name
+  }, { log: false });
+});
+
+afterEach(function () {
+  const runId = Cypress.env("RUN_ID");
+  const attemptPriority = Number(Cypress.env("ATTEMPT_PRIORITY") || 1);
+  const testState = this.currentTest && this.currentTest.state
+    ? this.currentTest.state
+    : "unknown";
+
+  cy.get("body", { log: false, timeout: 10000 }).then(($body) => {
+    const bodyText = $body.text();
+    const outcome = classifyBookingOutcome(bodyText, "");
+
+    const result = {
+      run_id: runId,
+      attempt_priority: attemptPriority,
+      test_state: testState,
+      status: outcome.status,
+      pnr: outcome.pnr,
+      confidence: outcome.confidence,
+      retry_safe: outcome.retry_safe
+    };
+
+    return cy.task("writeRunResult", result, { log: false })
+      .then(() => cy.task("appendRunEvent", {
+        run_id: runId,
+        event: "run_finished",
+        attempt_priority: attemptPriority,
+        test_state: testState,
+        status: outcome.status,
+        confidence: outcome.confidence,
+        retry_safe: outcome.retry_safe
+      }, { log: false }));
+  });
+});
