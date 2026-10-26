@@ -116,6 +116,8 @@ npm run start-booking
 
 ## Run results
 
+After the test ends, the observer briefly waits for a settling payment redirect so it can capture a returned PNR when available.
+
 Every local run writes:
 
 ```text
@@ -131,6 +133,7 @@ Result statuses include:
 - `no_availability`
 - `payment_pending_or_uncertain`
 - `payment_failed`
+- `payment_success_unverified`
 - `transaction_error`
 - `unknown`
 
