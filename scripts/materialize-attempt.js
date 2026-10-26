@@ -51,6 +51,17 @@ const fixture = {
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(fixture, null, 2) + "\n");
 
+fs.mkdirSync("artifacts", { recursive: true });
+fs.writeFileSync(
+  "artifacts/current-attempt.json",
+  JSON.stringify({
+    priority: requestedPriority,
+    train_no: fixture.TRAIN_NO,
+    class: fixture.TRAIN_COACH,
+    travel_date: fixture.TRAVEL_DATE
+  }, null, 2) + "\n"
+);
+
 console.log("Prepared local attempt:");
 console.log(
   "#" + requestedPriority + " " +
