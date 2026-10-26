@@ -259,3 +259,34 @@ footer {
   .attempt-head, .attempt-row { grid-template-columns: 58px 1fr 92px 40px; }
   footer { flex-direction: column; }
 }
+
+.result-panel {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel-2);
+  padding: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.result-panel.empty {
+  color: var(--muted);
+}
+
+.result-title {
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.result-meta {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.result-action {
+  margin-top: 5px;
+  font-weight: 750;
+}
+
+.result-action.safe { color: var(--accent); }
+.result-action.stop { color: var(--danger); }
