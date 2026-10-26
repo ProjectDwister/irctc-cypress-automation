@@ -13,7 +13,8 @@
     "preflight": "npm run validate-example && npm run self-test",
     "plan-preview": "node scripts/plan-preview.js",
     "self-test": "node scripts/self-test.js",
-    "next-attempt": "node scripts/next-attempt.js"
+    "next-attempt": "node scripts/next-attempt.js",
+    "prepare-attempt": "node scripts/materialize-attempt.js"
   },
   "author": "Shivam Pandey",
   "license": "ISC",
