@@ -3,10 +3,8 @@
   "version": "3.0.4",
   "description": "IRCTC Ticket Booking",
   "scripts": {
-    "start-captha-server": "python irctc-captcha-solver/app-server.py --host 0.0.0.0 --port 5000",
-    "wait-for-captha-server-to-come-up": "wait-on http://localhost:5000",
     "start-irctc-booking": "cypress run --headed --no-exit",
-    "start-booking": "concurrently \"npm run start-captha-server\" \"npm run wait-for-captha-server-to-come-up && npm run start-irctc-booking\"",
+    "start-booking": "npm run validate-config && npm run start-irctc-booking",
     "test": "cypress run",
     "validate-config": "node scripts/validate-config.js",
     "validate-example": "node scripts/validate-config.js cypress/fixtures/passenger_data.example.json",
