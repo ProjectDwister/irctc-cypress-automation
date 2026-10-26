@@ -1,0 +1,18 @@
+{
+  "family": [
+    {
+      "NAME": "Example Adult",
+      "AGE": 35,
+      "GENDER": "Male",
+      "SEAT": "No Preference",
+      "FOOD": "No Food"
+    },
+    {
+      "NAME": "Example Child",
+      "AGE": 10,
+      "GENDER": "Female",
+      "SEAT": "No Preference",
+      "FOOD": "No Food"
+    }
+  ]
+}
