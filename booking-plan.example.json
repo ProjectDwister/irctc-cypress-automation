@@ -1,0 +1,18 @@
+{
+  "journey": {
+    "source": "MMCT",
+    "destination": "NDLS",
+    "date": "15/11/2026",
+    "quota": "GENERAL"
+  },
+  "passenger_profile": "family",
+  "rules": {
+    "book_only_if_confirmed": true,
+    "max_total_fare": 12000
+  },
+  "attempts": [
+    { "priority": 1, "train_no": "12951", "class": "2A" },
+    { "priority": 2, "train_no": "12953", "class": "2A" },
+    { "priority": 3, "train_no": "12951", "class": "3A" }
+  ]
+}
