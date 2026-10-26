@@ -10,7 +10,8 @@
     "test": "cypress run",
     "validate-config": "node scripts/validate-config.js",
     "validate-example": "node scripts/validate-config.js cypress/fixtures/passenger_data.example.json",
-    "preflight": "npm run validate-example"
+    "preflight": "npm run validate-example",
+    "plan-preview": "node scripts/plan-preview.js"
   },
   "author": "Shivam Pandey",
   "license": "ISC",
