@@ -13,6 +13,7 @@ Possible result statuses:
 - `no_availability`: safe to move to the next ranked train/class attempt.
 - `payment_pending_or_uncertain`: stop and review. Never automatically retry after payment has started.
 - `payment_failed`: stop and review. A failed-looking payment can still have delayed or ambiguous settlement.
+- `payment_success_unverified`: payment success was observed without a confirmed ticket/PNR. Stop and verify before any retry.
 - `transaction_error`: stop and review.
 - `unknown`: stop and review.
 
