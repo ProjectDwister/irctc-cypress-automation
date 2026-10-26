@@ -15,9 +15,11 @@
         <p class="sub">Create a local booking plan without storing IRCTC credentials or passenger details in the repository.</p>
       </div>
       <div class="hero-actions">
+        <button id="resultBtn" class="ghost">Review result</button>
         <button id="importBtn" class="ghost">Import plan</button>
         <button id="exportBtn" class="primary">Export plan</button>
         <input id="fileInput" type="file" accept="application/json,.json" hidden />
+        <input id="resultInput" type="file" accept="application/json,.json" hidden />
       </div>
     </header>
 
@@ -92,6 +94,19 @@
         </div>
         <div id="preview" class="preview"></div>
         <p class="hint">Fallback is permitted only for pre-payment availability failures. Payment-pending, failed-looking, or unknown outcomes require review before another booking attempt.</p>
+      </article>
+
+      <article class="card full">
+        <div class="card-title">
+          <div>
+            <span class="step">04</span>
+            <h2>Run result</h2>
+          </div>
+          <span class="status">Import artifacts/run-result.json</span>
+        </div>
+        <div id="resultPanel" class="result-panel empty">
+          No run result loaded.
+        </div>
       </article>
     </section>
 
