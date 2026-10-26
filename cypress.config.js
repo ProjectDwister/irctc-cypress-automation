@@ -26,6 +26,19 @@ module.exports = defineConfig({
           return null;
         },
 
+        readCurrentAttempt() {
+          const file = path.join(__dirname, "artifacts", "current-attempt.json");
+          if (!fs.existsSync(file)) {
+            return { priority: 1 };
+          }
+
+          try {
+            return JSON.parse(fs.readFileSync(file, "utf8"));
+          } catch (error) {
+            return { priority: 1 };
+          }
+        },
+
         appendRunEvent(payload) {
           const dir = ensureArtifactsDir();
           const runId = safeRunId(payload.run_id);
