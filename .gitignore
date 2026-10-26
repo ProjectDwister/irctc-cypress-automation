@@ -8,3 +8,5 @@ artifacts/
 .env
 cypress.env.json
 cypress/fixtures/passenger_data.json
+booking-plan.json
+passenger-profiles.json
