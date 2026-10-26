@@ -14,12 +14,19 @@ beforeEach(function () {
   const runId = Cypress.env("RUN_ID") || makeRunId();
   Cypress.env("RUN_ID", runId);
 
-  cy.task("appendRunEvent", {
-    run_id: runId,
-    event: "run_started",
-    attempt_priority: Number(Cypress.env("ATTEMPT_PRIORITY") || 1),
-    spec: Cypress.spec.name
-  }, { log: false });
+  cy.task("readCurrentAttempt", null, { log: false }).then((attempt) => {
+    const priority = Number(attempt?.priority || Cypress.env("ATTEMPT_PRIORITY") || 1);
+    Cypress.env("ATTEMPT_PRIORITY", priority);
+
+    return cy.task("appendRunEvent", {
+      run_id: runId,
+      event: "run_started",
+      attempt_priority: priority,
+      train_no: attempt?.train_no || null,
+      class: attempt?.class || null,
+      spec: Cypress.spec.name
+    }, { log: false });
+  });
 });
 
 afterEach(function () {
